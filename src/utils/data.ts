@@ -27,6 +27,8 @@ const syncHostHistoryPrefix = storageDataPrefix.syncHostHistory
 const listPrefix = storageDataPrefix.list
 const dislikeListPrefix = storageDataPrefix.dislikeList
 const userApiPrefix = storageDataPrefix.userApi
+// [BILI-PATCH] 首次运行自动内置 B站音源 的标记键
+const biliSourceSeededKey = storageDataPrefix.userApi + 'bili_source_seeded'
 const openStoragePathPrefix = storageDataPrefix.openStoragePath
 const selectedManagedFolderPrefix = storageDataPrefix.selectedManagedFolder
 
@@ -497,6 +499,20 @@ export const removeSyncHostHistory = async(index: number) => {
 let userApis: LX.UserApi.UserApiInfo[] = []
 export const getUserApiList = async(): Promise<LX.UserApi.UserApiInfo[]> => {
   userApis = await getData<LX.UserApi.UserApiInfo[]>(userApiPrefix) ?? []
+
+  // [BILI-PATCH] 首次运行自动内置 B站专属音源
+  if (!userApis.length) {
+    const seeded = await getData<boolean>(biliSourceSeededKey) ?? false
+    if (!seeded) {
+      try {
+        const { biliSourceScript } = await import('./biliSourceScript')
+        await addUserApi(biliSourceScript)
+        void saveData(biliSourceSeededKey, true)
+      } catch (err) {
+        console.log('bili source seed failed', (err as Error)?.message)
+      }
+    }
+  }
 
   // 移除 1.7.1 及之前版本的脚本数据被意外存储到列表中的问题
   let updated = false

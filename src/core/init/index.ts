@@ -1,4 +1,4 @@
-import { initSetting, showPactModal } from '@/core/common'
+import { initSetting, showPactModal, updateSetting } from '@/core/common'
 import registerPlaybackService from '@/plugins/player/service'
 import initTheme from './theme'
 import initI18n from './i18n'
@@ -14,6 +14,7 @@ import settingState from '@/store/setting/state'
 import { checkUpdate } from '@/core/version'
 import { bootLog } from '@/utils/bootLog'
 import { cheatTip } from '@/utils/tools'
+import { getUserApiList } from '@/utils/data'
 
 let isFirstPush = true
 const handlePushedHomeScreen = async() => {
@@ -47,6 +48,15 @@ export default async() => {
 
   await initUserApi(setting)
   bootLog('User Api inited.')
+
+  // [BILI-PATCH] 未选择音源时自动选中第一个自定义音源(内置B站音源)
+  if (!setting['common.apiSource']) {
+    const userApiList = await getUserApiList()
+    if (userApiList.length) {
+      setting['common.apiSource'] = userApiList[0].id
+      updateSetting({ 'common.apiSource': userApiList[0].id })
+    }
+  }
 
   setApiSource(setting['common.apiSource'])
   bootLog('Api inited.')

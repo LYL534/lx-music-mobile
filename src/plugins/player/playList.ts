@@ -46,6 +46,8 @@ const buildTracks = (musicInfo: LX.Player.PlayMusic, url?: LX.Player.Track['url'
   const album = mInfo.album || undefined
   const artwork = isShowNotificationImage && mInfo.pic && httpRxp.test(mInfo.pic) ? mInfo.pic : undefined
   const lyric = getCurrentFullLyric(mInfo.id)
+  // [BILI-PATCH] B站 CDN 音频要求 Referer, 原生播放器默认不带, 需要显式添加
+  const biliHeaders = url && /bilivideo\.com|hdslb\.com|bilibili\.com/.test(url) ? { Referer: 'https://www.bilibili.com/' } : undefined
   if (url) {
     track.push({
       id: `${mInfo.id}__//${Math.random()}__//${url}`,
@@ -55,6 +57,7 @@ const buildTracks = (musicInfo: LX.Player.PlayMusic, url?: LX.Player.Track['url'
       album,
       artwork,
       userAgent: defaultUserAgent,
+      headers: biliHeaders,
       musicId: mInfo.id,
       lyric,
       // original: { ...musicInfo },
