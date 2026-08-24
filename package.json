@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "react-native run-android --active-arch-only",
+    "postinstall": "node scripts/apply-rntp-patch.js",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "sc": "react-native start --reset-cache",
@@ -88,6 +89,7 @@
     "eslint-config-standard-with-typescript": "^43.0.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "patch-package": "^8.0.1",
     "typescript": "^5.9.3"
   },
   "overrides": {

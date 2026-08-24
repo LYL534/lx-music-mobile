@@ -8,7 +8,9 @@ import playerState from '@/store/player/state'
 
 const list: LX.Player.Track[] = []
 
-const defaultUserAgent = 'Mozilla/5.0 (Linux; Android 10; Pixel 3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Mobile Safari/537.36'
+// [BILI-PATCH] B站 CDN 按 User-Agent 校验防盗链: 移动 UA 一律 403(实测),
+// 必须使用与音源脚本一致的 PC UA
+const defaultUserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 const httpRxp = /^(https?:\/\/.+|\/.+)/
 
 export const state = {

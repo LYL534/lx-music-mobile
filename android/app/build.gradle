@@ -194,6 +194,9 @@ dependencies {
     // implementation "androidx.javascriptengine:javascriptengine:1.0.0-alpha07"
     // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation 'wang.harlon.quickjs:wrapper-android:2.4.0'
+    // [BILI-PATCH] OkHttp 数据源: Android HttpURLConnection 桥会剥掉 Referer 头,
+    // 改用 OkHttp 直连(与 RN fetch 同栈, 已验证可正常发送 Referer)
+    implementation 'androidx.media3:media3-datasource-okhttp:1.8.0'
 
   if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
