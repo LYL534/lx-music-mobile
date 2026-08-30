@@ -51,7 +51,10 @@ final class UserApiScriptExecutor: NSObject {
             self.inited = false
             self.context = nil
 
-            let jsContext = JSContext()
+            guard let jsContext = JSContext() else {
+                self.emitInitFailed("Create JavaScript Env Failed")
+                return
+            }
             self.context = jsContext
             // 异常统一在调用点检查 context.exception 上报, 这里只负责兜底避免泄漏
             jsContext.exceptionHandler = { _, _ in }
