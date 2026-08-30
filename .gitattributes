@@ -1,0 +1,11 @@
+# Swift 源文件统一 LF(避免 Windows 提交的 CRLF 破坏 Swift 字符串续行等语法)
+*.swift text eol=lf
+*.m text eol=lf
+*.mm text eol=lf
+*.h text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
